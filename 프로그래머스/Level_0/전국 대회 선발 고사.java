@@ -1,3 +1,4 @@
+/*
 import java.util.Arrays;
 import java.util.ArrayList;
 
@@ -19,5 +20,24 @@ class Solution {
         }
         
         return list.get(0) * 10000 + list.get(1) * 100 + list.get(2);
+    }
+}
+*/
+
+import java.util.PriorityQueue;
+
+class Solution {
+    // 선발 고사 등수를 담은 정수 배열 rank
+    // 전국 대회 참여 가능 여부가 담긴 boolean 배열 attendance
+    public int solution(int[] rank, boolean[] attendance) {
+        
+        PriorityQueue<Integer> q = new PriorityQueue<>((a,b) -> rank[a] - rank[b]);
+        
+        for(int i=0; i<rank.length; i++){
+            if(attendance[i])
+                q.add(i); 
+        }
+        
+        return q.poll()*10000 + q.poll() * 100 + q.poll();
     }
 }
