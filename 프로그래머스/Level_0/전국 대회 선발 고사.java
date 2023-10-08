@@ -1,4 +1,7 @@
 /*
+
+1. ArrayList
+
 import java.util.Arrays;
 import java.util.ArrayList;
 
@@ -24,6 +27,9 @@ class Solution {
 }
 */
 
+/*
+
+2. PriorityQeueu
 import java.util.PriorityQueue;
 
 class Solution {
@@ -39,5 +45,28 @@ class Solution {
         }
         
         return q.poll()*10000 + q.poll() * 100 + q.poll();
+    }
+}
+
+*/
+
+// 3. Stream
+
+import java.util.stream.IntStream;
+import java.util.Comparator;
+
+class Solution {
+    // 선발 고사 등수를 담은 정수 배열 rank
+    // 전국 대회 참여 가능 여부가 담긴 boolean 배열 attendance
+    public int solution(int[] rank, boolean[] attendance) {
+     
+        return IntStream.range(0, rank.length)
+               .filter(i -> attendance[i])
+               .boxed()
+               .sorted(Comparator.comparing(i -> rank[i]))
+               .limit(3)
+               .reduce((current, next) -> current * 100 + next)
+               .get();
+                   
     }
 }
