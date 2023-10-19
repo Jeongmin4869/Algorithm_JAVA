@@ -1,3 +1,4 @@
+/*
 import java.util.ArrayList;
 
 class Solution {
@@ -21,5 +22,25 @@ class Solution {
             answer[i] = list.get(i);
         }
         return answer;
+    }
+}
+
+*/
+
+import java.util.ArrayList;
+
+class Solution {
+
+    public int[] solution(int l, int r) {
+        int[] answer = {-1};
+        ArrayList<Integer> list = new ArrayList<>();
+        
+        for(int i=1; i<64; i++){
+            int num = Integer.parseInt(Integer.toBinaryString(i)) * 5;
+            if(num >= l && num <= r)
+                list.add(num);
+        }
+        
+        return list.size() == 0 ? answer : list.stream().mapToInt(i -> i).toArray();
     }
 }
