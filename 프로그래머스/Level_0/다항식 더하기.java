@@ -1,4 +1,4 @@
-class Solution {
+/*class Solution {
     public String solution(String polynomial) {
         String answer = "";
         String num = "";
@@ -32,5 +32,26 @@ class Solution {
         if(sums[1] > 0) answer += Integer.toString(sums[1]);
         
         return answer  ;
+    }
+}
+*/
+
+class Solution {
+    public String solution(String polynomial) {
+        int xCount = 0;
+        int sum = 0;
+        
+        for(String s : polynomial.split(" ")){
+            if(s.contains("x")){
+                xCount += s.equals("x") ? 1 : Integer.parseInt(s.replace("x", ""));
+                continue;
+            }
+            if(!s.contains("+")){
+                sum += Integer.parseInt(s);
+            }
+        }
+        
+        return (xCount != 0 ? (xCount == 1 ? "x" : xCount + "x") : "") + (sum != 0 ? (xCount!=0? " + " : "") + sum : xCount == 0 ? "0" : "");
+        
     }
 }
