@@ -1,6 +1,7 @@
 class Solution {
     public String solution(String myString, String pat) {
-        
+        /*
+        String answer = "";
         int index = 0, size = pat.length();
         char last = pat.charAt(size-1);
         
@@ -12,5 +13,10 @@ class Solution {
         }
         
         return myString.substring(0, index);
+        */
+        
+        int index = myString.lastIndexOf(pat);
+        return myString.substring(0, index) + pat;
+        
     }
 }
