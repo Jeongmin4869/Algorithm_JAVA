@@ -1,3 +1,4 @@
+/*
 class Solution {
     public int solution(int[][] lines) {
         int[] arr = new int[201];
@@ -14,5 +15,21 @@ class Solution {
         }
         
         return answer;
+    }
+}
+*/
+import java.util.*;
+
+class Solution {
+    public int solution(int[][] lines) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int[] line : lines){
+            int min = Math.min(line[0], line[1]);
+            int max = Math.max(line[0], line[1]);
+            for(int i=min; i<max; i++){
+                map.merge(i, 1, Integer::sum);
+            }
+        }
+        return (int)map.values().stream().filter(i -> i>1).count();
     }
 }
