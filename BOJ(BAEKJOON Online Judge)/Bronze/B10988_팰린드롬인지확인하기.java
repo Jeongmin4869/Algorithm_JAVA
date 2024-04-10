@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class Main_B10988 {
 
     public static void main(String[] args){
+        /*
         Scanner sc = new Scanner(System.in);
         String str = sc.next();
         int len = str.length();
@@ -14,6 +15,12 @@ public class Main_B10988 {
             }
         }
         System.out.println(answer);
+        sc.close();
+        */
+        Scanner sc = new Scanner(System.in);
+        String str = sc.next();
+        StringBuffer sb = new StringBuffer(str);
+        System.out.println(str.equals(sb.reverse().toString()) ? 1 : 0);
         sc.close();
     }
 }
