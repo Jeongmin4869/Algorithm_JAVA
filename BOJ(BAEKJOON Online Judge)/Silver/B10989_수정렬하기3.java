@@ -1,15 +1,16 @@
 import java.util.*;
+import java.io.*;
 
-public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);  
+public class Main_B10989 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
-        int N = sc.nextInt();
+        int N = Integer.parseInt(br.readLine());
         int[] count = new int[10001]; 
         
         // 카운팅 정렬
         for(int i=0; i<N; i++){
-            int index = sc.nextInt();
+            int index = Integer.parseInt(br.readLine());
             count[index] += 1;
         }
         for(int i=0; i<count.length; i++){
@@ -20,6 +21,6 @@ public class Main {
         }
         
         System.out.print(sb);
-        sc.close();
+        br.close();
     }
 }
