@@ -1,0 +1,24 @@
+import java.util.*;
+import java.io.*;
+
+class Main_B11047 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        int[] arr= new int[N];
+        for(int i=0;i<N; i++){
+            arr[i]=Integer.parseInt(br.readLine());
+        }
+
+        Arrays.sort(arr);
+        int count = 0;
+        for(int i=N-1; i>=0; i--){
+            count += M/arr[i];
+            M %= arr[i];
+        }
+        System.out.print(count);
+        sc.close();
+    }
+}
