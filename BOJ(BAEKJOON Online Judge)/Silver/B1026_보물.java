@@ -4,23 +4,29 @@ class Main_B1026 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int N = sc.nextInt();
-        int[] arr1 = new int[N];
-        int[] arr2 = new int[N];
+        int[] A = new int[N];
+        int[] B = new int[N];
         sc.nextLine();
         for(int i=0; i<N; i++){
-            arr1[i] = sc.nextInt();
+            A[i] = sc.nextInt();
         }
+
         sc.nextLine();
         for(int i=0; i<N; i++){
-            arr2[i] = sc.nextInt();
+            B[i] = sc.nextInt();
         }
 
-        Arrays.sort(arr1);
-        Arrays.sort(arr2);
-
+        Arrays.sort(A);
+        boolean[] visited = new boolean[N]; // B를 재배엻하지 않고 구하는 법
         long sum = 0;
         for(int i=0; i<N; i++){
-            sum += arr1[i] * arr2[N-1-i];
+            int maxIndex = -1;
+            for(int j=0; j<N; j++){
+                if(!visited[j] && (maxIndex == -1 || B[maxIndex] < B[j]))
+                    maxIndex = j;                
+            }
+            visited[maxIndex] = true;
+            sum += A[i] * B[maxIndex];
         }
         
         System.out.print(sum);
