@@ -1,8 +1,7 @@
 import java.util.*;
-import java.lang.*;
 import java.io.*;
 
-class Main_B1296{
+class Main_B1286 {
     
     public static void main(String[] args) throws IOException  {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -10,14 +9,14 @@ class Main_B1296{
         String Ename = br.readLine();
         int N = Integer.parseInt(br.readLine());
         String bestTeam = "";
-        long maxScore = 0;
+        long maxScore = -1; // 초기값 설정 중요
         
         for(int i=0; i<N; i++){
             String Tname = br.readLine();
-            int[] arr = new int[4];
+            long[] arr = new long[4];
             
 			for(int j = 0; j < 4; j++) {
-				int sum = Ename.length() - Ename.replace(String.valueOf(love.charAt(j)), "").length();
+				long sum = Ename.length() - Ename.replace(String.valueOf(love.charAt(j)), "").length();
 				sum += Tname.length() - Tname.replace(String.valueOf(love.charAt(j)), "").length();
 				arr[j] = sum;
 			}
@@ -25,15 +24,15 @@ class Main_B1296{
 			long total = 1;
 			
 			//연산하는 반복문
-			for(int j = 0; j < 4; j++) {
+			for(int j = 0; j < 3; j++) {
 				for(int k = (j + 1); k < 4; k++) {
-					total *= (arr[j] + arr[k]);
+					total *= (arr[j] + arr[k])%100;
 				}
 			}
 
             total %= 100;
             
-            if (maxScore < total || (maxScore == total && bestTeam.compareTo(Tname) > 0)) {
+            if (maxScore < total || (maxScore == total && bestTeam.compareTo(Tname) >= 0)) {
                 maxScore = total;
                 bestTeam = Tname;
             }
