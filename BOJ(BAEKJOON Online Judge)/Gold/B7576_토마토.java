@@ -1,3 +1,73 @@
+
+import java.util.*;
+import java.io.*;
+
+class Main {
+    static int[][] box;
+    static int[] dx = {1,0,-1,0};
+    static int[] dy = {0,1,0,-1};
+    static Queue<Tomato> q;
+    static int N, M;
+    static int count;
+    
+    static class Tomato{
+        int x;
+        int y;
+        int day;
+
+        public Tomato(int x, int y, int day){
+            this.x = x;
+            this.y = y;
+            this.day = day;
+        }
+    }
+    
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+    
+        M = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
+
+        box = new int[N][M];
+        count = 0;
+        q = new LinkedList<>();
+        for(int i=0; i<N; i++){
+            st = new StringTokenizer(br.readLine());
+            for(int j=0; j<M; j++){
+                box[i][j] = Integer.parseInt(st.nextToken());
+                if(box[i][j]==0) count += 1;
+                if(box[i][j]==1) q.offer(new Tomato(i, j, 0));
+            }
+        }
+
+        int result = bfs();
+        System.out.println(result);
+        br.close();
+    }
+
+    public static int bfs(){
+        int maxday = 0;
+        while(!q.isEmpty()){
+            Tomato tomato = q.poll();
+            for(int i=0; i<4; i++){
+                int xx = tomato.x + dx[i];
+                int yy = tomato.y + dy[i];
+                if(xx<N&&xx>=0&&yy<M&&yy>=0&&box[xx][yy]==0){
+                    box[xx][yy] = 1;
+                    count -= 1;
+                    q.offer(new Tomato(xx, yy, tomato.day + 1 ));
+                }
+            }
+            if(maxday < tomato.day) maxday = tomato.day;
+        }
+        
+        if(count == 0) return maxday;
+        return -1;
+    }
+}
+
+/*
 import java.util.*;
 import java.io.*;
 
@@ -63,3 +133,4 @@ class Main_B7576 {
 
     
 }
+*/
