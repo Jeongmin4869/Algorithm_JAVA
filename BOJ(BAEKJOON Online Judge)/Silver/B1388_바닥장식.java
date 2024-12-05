@@ -45,8 +45,31 @@ class Main_B1388 {
                 dfs(x+1, y, tile);
             }
         }
-        
     }
 
+    static void bfs(int x, int y, char tile){
+        visited[x][y] = true;
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[] {x, y});
+
+        while(!q.isEmpty()){
+            int[] node = q.poll();
+            int xx = node[0];
+            int yy = node[1];
+
+            if(tile == '-'){
+                if(yy+1<m && !visited[xx][yy+1] && c[xx][yy+1]=='-'){
+                    visited[xx][yy+1] = true;
+                    q.add(new int[]{xx, yy+1});
+                }
+            }
+            else if(tile == '|'){
+                if(xx+1<n && !visited[xx+1][yy] && c[xx+1][yy]=='|'){
+                    visited[xx+1][yy] = true;
+                    q.add(new int[]{xx+1, yy});
+                }
+            }
+        }
+    }
     
 }
