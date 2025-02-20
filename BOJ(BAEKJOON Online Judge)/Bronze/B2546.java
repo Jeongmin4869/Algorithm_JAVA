@@ -12,38 +12,28 @@ class Main_B2546 {
             StringTokenizer st = new StringTokenizer(br.readLine());
             int n = Integer.parseInt(st.nextToken());
             int m = Integer.parseInt(st.nextToken());
-            int[] arr1 = new int[n];
-            int[] arr2 = new int[m];
-            double sum1 =0, sum2 =0;
+            long[] score = new long[n];
+            long sum1 =0, sum2 =0;
 
             st = new StringTokenizer(br.readLine());
             for(int i=0; i<n; i++){
                 int num = Integer.parseInt(st.nextToken());
                 sum1 += num;
-                arr1[i] = num;
+                score[i] = num;
             }
 
             st = new StringTokenizer(br.readLine());
             for(int i=0; i<m; i++){
                 int num = Integer.parseInt(st.nextToken());
                 sum2 += num;
-                arr2[i] = num;
             }
 
-            double ave1 = (double)sum1/n;
-            double ave2 = (double)sum2/m;
-            
             int result = 0;
-            for(int i=0; i<Math.min(n,m); i++){
-                int cscore = arr1[i];
-                int sscore = arr2[i];
-
-                // Compare the new averages with original averages
-                if ((double)cscore <= ave1 && (double)sscore >= ave2) {
+            for(int i=0; i<n; i++){
+                if (score[i]*n < sum1 && score[i]*m > sum2) {
                     result += 1;
                 }
             }
-
             System.out.println(result);
         }
         
