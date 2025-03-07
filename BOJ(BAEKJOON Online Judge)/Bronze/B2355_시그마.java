@@ -7,10 +7,10 @@ class Main_B2355 {
         StringTokenizer st = new StringTokenizer(br.readLine());
         long a = Long.parseLong(st.nextToken());
         long b = Long.parseLong(st.nextToken());
-
-        long result = (b+1)*(b/2) - (a-1)*(a/2);
-        if(b%2!=0) result += 1;
-        if(a%2!=0) result -= 1;
+ 
+        long max = Math.max(a,b);
+        long min = Math.min(a,b);
+        long result = (((max+1)*max)/2) - (((min-1)*min)/2);
         
         System.out.println(result);
     }
