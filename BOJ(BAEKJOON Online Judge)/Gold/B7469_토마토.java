@@ -1,11 +1,10 @@
 import java.util.*;
-import java.lang.*;
 import java.io.*;
 
-class Main_B7469 {
+class Main_B7569 {
     static int N, M, H;
     static int count = 0;
-    static int MaxDay = 0;
+    
     static int[] dx = {1, 0, -1, 0};
     static int[] dy = {0, -1, 0, 1};
     static int[] dz = {1, -1};
@@ -42,23 +41,22 @@ class Main_B7469 {
                 }
             }
         }
+    
+        System.out.println(dfs());
         
-        dfs();
-        
-        if(count > 0) System.out.println(-1);
-        else System.out.println(MaxDay);
     }
 
-    public static void dfs(){
-
+    public static int dfs(){
+        int MaxDay = 0;
         while(!q.isEmpty()){
             Tomatos now = q.poll();
             for(int i=0; i<4; i++){
                 int px = now.x + dx[i];
                 int py = now.y + dy[i];
-                if(px>=0 && px<M && py>=0 && py<N && box[now.z][now.x][now.y]==0){
+                if(px>=0 && px<M && py>=0 && py<N && box[now.z][px][py]==0){
                     count -= 1;
-                    MaxDay = Math.max(now.days, MaxDay);
+                    box[now.z][px][py] = 1;
+                    MaxDay = Math.max(now.days+1, MaxDay);
                     q.offer(new Tomatos(px, py, now.z, now.days+1));
                 }
             }
@@ -67,11 +65,14 @@ class Main_B7469 {
                 int pz = now.z + dz[i];
                 if(pz>=0 && pz<H && box[pz][now.x][now.y] == 0){
                     count -= 1;
-                    MaxDay = Math.max(now.days, MaxDay+1);
+                    box[pz][now.x][now.y] = 1;
+                    MaxDay = Math.max(now.days+1, MaxDay);
                     q.offer(new Tomatos(now.x, now.y, pz, now.days+1));
                 }
             }
         }
+        if(count > 0) return -1;
+        return MaxDay;
         
     }
 }
