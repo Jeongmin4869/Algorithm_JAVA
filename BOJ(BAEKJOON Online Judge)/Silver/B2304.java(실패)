@@ -9,50 +9,54 @@ class Main {
         int n =Integer.parseInt(br.readLine());
 
         List<int[]> list = new ArrayList<>();
-        int maxlen = 0;
-        int maxidx = 0;
         for(int i=0; i<n; i++){
             StringTokenizer st = new StringTokenizer(br.readLine());
             int a =Integer.parseInt(st.nextToken());
             int b =Integer.parseInt(st.nextToken());
             list.add(new int[]{a,b});
-            maxidx = Math.max(maxidx, a);
-            maxlen = Math.max(maxlen, b);
         }
-
+        
         Collections.sort(list, (o1, o2) -> {
             return o1[0] - o2[0];
         });
+
+        int maxlen = 0;
+        int maxidx = 0;
+        for(int i=0; i<n; i++){
+            if(list.get(i)[1] > maxlen){
+                maxlen = list.get(i)[1];
+                maxidx = i;
+            }
+        }
         
         int total = 0;
         int nowmax = 0;
         int s = 0;
-        for(int i=0; i<n; i++){
-            int nowa = list.get(i)[0];
-            int nowb = list.get(i)[1];
-            if(nowa<maxidx&&nowb>nowmax){
-                total += nowmax*(nowa-s);
-                nowmax = nowb;
-                s = nowa;
-            }
-            if(nowa == maxidx) break;
+        for(int i=0; i<=maxidx; i++){
+            int nowx = list.get(i)[0];
+            int nowh = list.get(i)[1];            
+            if(nowh>nowmax){
+                total += nowmax*(nowx-s);                
+                nowmax = nowh;
+                s = nowx;
+            }            
         }
+
         
         nowmax = 0;
-        s = list.get(n-1)[0];        
-        for(int i=n-1; i>=0; i--){
-            int nowa = list.get(i)[0];
-            int nowb = list.get(i)[1];
-            if(nowa<maxidx&&nowb>nowmax){
-                total += nowmax*(s-nowa);
-                nowmax = nowb;
-                s = nowa;
-            }
-            if(nowa == maxidx) break;
+        s = list.get(n-1)[0];
+        for(int i=n-1; i>=maxidx; i--){
+            int nowx = list.get(i)[0];            
+            int nowh = list.get(i)[1];            
+            if(nowh > nowmax){
+                total += nowmax * (s - nowx);
+                s = nowx;
+                nowmax = nowh;
+            }            
         }
+        
         total += maxlen;
-        
-        
+                
         System.out.println(total);
     }
 }
