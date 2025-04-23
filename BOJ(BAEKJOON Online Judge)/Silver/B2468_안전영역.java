@@ -29,7 +29,8 @@ class Main_B2468{
                 for(int k=0; k<N; k++){
                     if(map[j][k]>depth&&!visited[j][k]){
                         count += 1;
-                        dfs(depth, j, k);
+                        // dfs(depth, j, k);
+                        bfs(depth, j, k);
                     }
                 }
             }
@@ -47,6 +48,27 @@ class Main_B2468{
             if( px>=0&&px<N&&py>=0&&py<N
                 && map[px][py]>depth&&!visited[px][py]){
                 dfs(depth, px, py);
+            }
+        }
+        return;
+    }
+    
+    public static void bfs(int depth, int x, int y){
+        visited[x][y] = true;
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[]{x,y});
+        while(!q.isEmpty()){
+            int[] pos = q.poll();
+            int nx = pos[0];
+            int ny = pos[1];
+            for(int i=0; i<4; i++){
+                int px = nx + dx[i];
+                int py = ny + dy[i];
+                if(px>=0&&px<N&&py>=0&&py<N 
+                   && map[px][py]>depth&&!visited[px][py]){
+                    visited[px][py] = true;
+                    q.offer(new int[]{px,py});
+                }
             }
         }
         return;
