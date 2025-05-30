@@ -1,9 +1,10 @@
 import java.util.*;
 import java.io.*;
 
-class Main {
+class Main_B2644 {
     static ArrayList<ArrayList<Integer>> list;
     static int[] check;
+    //static int count = 0;
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
@@ -26,7 +27,9 @@ class Main {
             list.get(y).add(x);
         }
         
-        dfs(A, 0);
+        //count = 0;
+        //dfs(A, 0);
+        bfs(A);
 
         if(check[B] == 0) System.out.print(-1);
         else System.out.print(check[B]);
@@ -40,5 +43,21 @@ class Main {
                 dfs(newnode, count+1);
             }
         }        
+    }
+    public static void bfs(int node){
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[]{node, 0});
+        while(!q.isEmpty()){
+            int[] now = q.poll();
+            int num = now[0];
+            int count = now[1];
+            for(int i=0; i<list.get(num).size(); i++){
+                int newnode = list.get(num).get(i);
+                if(check[newnode] == 0){
+                    check[newnode] = count + 1;
+                    q.offer(new int[]{newnode, count+1});
+                }
+            }            
+        }
     }
 }
