@@ -27,7 +27,10 @@ class Main_B11725 {
 
         StringBuilder sb = new StringBuilder();
         for(int i=1; i<=N; i++){
-            if(!visited[i]) dfs(i);
+            if(!visited[i]){
+                //dfs(i);
+                bfs(i);
+            }
         }
 
         for(int i=2; i<=N; i++){
@@ -45,6 +48,23 @@ class Main_B11725 {
                 visited[newnode] = true;
                 parent[newnode] = node;
                 dfs(newnode);
+            }
+        }
+    }
+
+    public static void bfs(int node){
+        visited[node] = true;
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(node);
+        while(!q.isEmpty()){
+            int now = q.poll();
+            for(int i=0; i<list.get(now).size(); i++){
+                int newnode = list.get(now).get(i);
+                if(!visited[newnode]){
+                    visited[newnode] = true;
+                    parent[newnode] = now;
+                    q.offer(newnode);
+                }
             }
         }
     }
