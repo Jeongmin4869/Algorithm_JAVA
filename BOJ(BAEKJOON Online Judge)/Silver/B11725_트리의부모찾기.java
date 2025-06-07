@@ -25,13 +25,10 @@ class Main_B11725 {
             list.get(v).add(u);
         }
 
-        StringBuilder sb = new StringBuilder();
-        for(int i=1; i<=N; i++){
-            if(!visited[i]){
-                //dfs(i);
-                bfs(i);
-            }
-        }
+        //dfs(1);
+        bfs(i);
+        
+        StringBuilder sb = new StringBuilder();        
 
         for(int i=2; i<=N; i++){
             sb.append(parent[i]).append("\n");
