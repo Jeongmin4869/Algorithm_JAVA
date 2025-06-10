@@ -1,8 +1,7 @@
 import java.util.*;
-import java.lang.*;
 import java.io.*;
 
-class Main_B1707 {
+class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int K = Integer.parseInt(br.readLine());
@@ -24,25 +23,32 @@ class Main_B1707 {
                 list.get(v).add(u);
             }
 
-            boolean[] visited = new boolean[V+1];
-            boolean result = dfs(list, 1, visited);
+            // boolean[] visited = new boolean[V+1];
+            int[] colors = new int[V+1];
+            boolean result = dfs(list, 1, colors, 1);
 
             if(result) System.out.println("YES");
             else System.out.println("NO");
         }        
     }
 
-    public static boolean dfs(ArrayList<ArrayList<Integer>> list, int node, boolean[] visited){
-        visited[node] = true;        
+    public static boolean dfs(ArrayList<ArrayList<Integer>> list, int node, int[] colors, int color){
+
+        // 호출하면서 색을 변경 
+        colors[node] = color;
+        int newcolor = color * -1;
+        
         for(int i=0; i<list.get(node).size(); i++){
             int newnode = list.get(node).get(i);
-            if(visited[newnode]){
-                return false;
+            // 방문한 노드인지를 먼저 확인
+            if(colors[newnode] == 0){
+                if(!dfs(list, newnode, colors, newcolor)){
+                    return false;
+                }
             }
-            
-            if(!dfs(list, newnode, visited)){
-                return false;
-            }
+            // 방문하였다면 색을 확인
+            if(colors[newnode] == color) return false;                                    
+
         }
         return true;        
     }
