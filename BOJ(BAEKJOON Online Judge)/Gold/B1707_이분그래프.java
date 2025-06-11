@@ -25,13 +25,45 @@ class Main {
 
             // boolean[] visited = new boolean[V+1];
             int[] colors = new int[V+1];
-            boolean result = dfs(list, 1, colors, 1);
+            boolean check = true;
+            for(int j=1; j<=V; j++){
+                if(colors[j] == 0){
+                    if(!dfs(list, j, colors, 1)){
+                        check = false;
+                        break;
+                    }
+                }
+                
+            }
 
-            if(result) System.out.println("YES");
+            if(check) System.out.println("YES");
             else System.out.println("NO");
         }        
     }
 
+    public static boolean bfs(ArrayList<ArrayList<Integer>> list, int node, int[] colors){
+        int color = 1;
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(node);
+        colors[node] = color;
+        while(!q.isEmpty()){
+            int top = q.poll();
+            int newcolor = colors[top] * -1;
+            for(int i=0; i<list.get(top).size(); i++){
+                int newnode = list.get(top).get(i);
+                if(colors[newnode] == 0){
+                    colors[newnode] = newcolor;
+                    q.add(newnode);
+                }
+                else if(colors[newnode] == colors[top]){                    
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    
     public static boolean dfs(ArrayList<ArrayList<Integer>> list, int node, int[] colors, int color){
 
         // 호출하면서 색을 변경 
