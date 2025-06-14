@@ -1,10 +1,24 @@
 import java.util.*;
-import java.lang.*;
 import java.io.*;
 
-// The main method must be in a class named "Main".
 class Main {
     static int N, M;
+
+    // 객체로 분리
+    static class Node{
+        int x;
+        int y;
+        int isBroken;
+        int dis;
+
+        Node(int x, int y, int isBroken, int dis){
+            this.x = x;
+            this.y = y;
+            this.isBroken = isBroken; // 벽을 부순 횟수를 기록
+            this.dis = dis;
+        }        
+    }
+    
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -28,14 +42,15 @@ class Main {
         int[] dx = {1, 0, -1, 0};
         int[] dy = {0, -1, 0, 1};
         visited[0][0][0] = true;
-        Queue<int[]> q = new LinkedList<>();
-        q.offer(new int[] {0, 0, 0, 1}); // x, y, isbroken, dis
+        Queue<Node> q = new LinkedList<>();
+        Node node = new Node(0, 0, 0, 1);
+        q.offer(node); 
         while(!q.isEmpty()){
-            int[] top = q.poll();
-            int px = top[0];
-            int py = top[1];
-            int isBroken = top[2];
-            int dis = top[3];
+            Node top = q.poll();
+            int px = top.x;
+            int py = top.y;
+            int isBroken = top.isBroken;
+            int dis = top.dis;
 
             if(px==N-1 && py==M-1) return dis;
             
@@ -46,11 +61,11 @@ class Main {
                 if(xx>=0 && xx<N && yy>=0 && yy<M){
                     if(arr[xx][yy] == 0 && !visited[xx][yy][isBroken]){
                         visited[xx][yy][isBroken] = true;
-                        q.offer(new int[] {xx, yy, isBroken, dis+1});
+                        q.offer(new Node(xx, yy, isBroken, dis+1));
                     }
                     if(arr[xx][yy] == 1 && isBroken == 0 && !visited[xx][yy][isBroken]){                        
                         visited[xx][yy][isBroken+1] = true;
-                        q.offer(new int[] {xx, yy, isBroken+1, dis+1});
+                        q.offer(new Node(xx, yy, isBroken+1, dis+1));
                     }
                 }
             }           
