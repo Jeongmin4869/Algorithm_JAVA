@@ -7,6 +7,7 @@ class Main {
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
+        int num = 1;
         while(true){
             st = new StringTokenizer(br.readLine());
             int n = Integer.parseInt(st.nextToken());
@@ -27,14 +28,19 @@ class Main {
             
             boolean[] visited = new boolean[n+1];
             int count = 0;
-            for(int i=1; i<n; i++){
+            for(int i=1; i<=n; i++){
                 if(visited[i] == false){
                     if(bfs(visited, list, i, n)) count += 1;
                 }
             }
+
+            if(count == 0) System.out.println("Case " + num + ": No trees.");
+            else if(count == 1) System.out.println("Case " + num + ": There is one tree.");
+            else if(count > 1) System.out.println("Case " + num + ": A forest of " + count + " trees.");
+
+            num += 1;
+            
         }
-        
-        System.out.println(0);
     }
 
     public static boolean bfs(boolean[] visited, ArrayList<ArrayList<Integer>> list, int root, int n){
@@ -46,11 +52,14 @@ class Main {
             int now = m.poll();
             for(int i=0; i<list.get(now).size(); i++){
                 int node = list.get(now).get(i);
-                if(visited[node] && parent[node] != now)
+                if(!visited[node]){
+                    visited[node] = true;
+                    parent[node] = now;
+                    m.offer(node);
+                }
+                else if(parent[now] != node){
                     return false;
-                visited[node] = true;
-                parent[node] = now;
-                m.offer(node);
+                }
             }
         }
         return true;
