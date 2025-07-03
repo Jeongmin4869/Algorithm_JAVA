@@ -1,8 +1,6 @@
 import java.util.*;
-import java.lang.*;
 import java.io.*;
 
-// The main method must be in a class named "Main".
 class Main {
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -26,11 +24,14 @@ class Main {
                 list.get(v).add(u);
             }
             
-            boolean[] visited = new boolean[n+1];
+            boolean[] visited = new boolean[n+1];            
             int count = 0;
             for(int i=1; i<=n; i++){
                 if(visited[i] == false){
-                    if(bfs(visited, list, i, n)) count += 1;
+                    //if(bfs(visited, list, i, n)) count += 1;
+                    int[] parent = new int[n+1];
+                    if(dfs(visited, parent, list, i)) count += 1;
+                    
                 }
             }
 
@@ -43,8 +44,23 @@ class Main {
         }
     }
 
-    public static boolean bfs(boolean[] visited, ArrayList<ArrayList<Integer>> list, int root, int n){
-        int[] parent = new int[n+1];
+    public static boolean dfs(boolean[] visited, int[] parent, ArrayList<ArrayList<Integer>> list, int root){
+        visited[root] = true;
+        for(int i=0; i<list.get(root).size(); i++){
+            int node = list.get(root).get(i);
+            if(!visited[node]){                
+                parent[node] = root;
+                if(!dfs(visited, parent, list, node)) return false;
+            }
+            else if(parent[root] != node) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean bfs(boolean[] visited, ArrayList<ArrayList<Integer>> list, int root){
+        int[] parent = new int[list.size()+1];
         visited[root] = true;
         Queue<Integer> m = new LinkedList<>();
         m.offer(root);
