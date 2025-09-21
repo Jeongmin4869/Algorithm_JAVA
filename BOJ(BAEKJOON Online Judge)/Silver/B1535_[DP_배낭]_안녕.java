@@ -19,7 +19,7 @@ class Main {
         int[]dp = new int[101];
         int result = 0;
         for(int i=1; i<=N; i++){
-            for(int j=99; j>=0; j--){
+            for(int j=100; j>=0; j--){
                 if(j-health[i]>0){
                     dp[j] = Math.max(dp[j], dp[j-health[i]]+happy[i]);
                     result = Math.max(dp[j], result);
