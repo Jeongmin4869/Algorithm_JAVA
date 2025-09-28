@@ -43,4 +43,20 @@ class Main {
             }
         }
     }
+
+    public static void bfs(int node){
+        visited[node] = true;
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(node);
+        while(!q.isEmpty()){
+            int now = q.poll();
+            for(int i=0; i<list.get(now).size(); i++){
+                int newnode = list.get(now).get(i);
+                if(!visited[newnode]){
+                    visited[newnode] = true;
+                    q.offer(newnode);
+                }
+            }
+        }
+    }
 }
