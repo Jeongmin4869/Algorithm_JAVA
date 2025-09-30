@@ -1,10 +1,9 @@
 import java.util.*;
+import java.lang.*;
 import java.io.*;
 
 class Main {
     static int N, M;
-    static String[][] map;
-    static boolean[][] visited;
     static int[] dx = { 0, 1, 0, -1};
     static int[] dy = { 1, 0, -1, 0};
 
@@ -13,40 +12,45 @@ class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
          N = Integer.parseInt(st.nextToken());
          M = Integer.parseInt(st.nextToken());
-        map = new String[N][M];
-        visited = new boolean[N][M];
+        String[][] map = new String[N][M];
         for(int i=0; i<N; i++){
             map[i] = br.readLine().split(" ");
         }
 
         int result = 0;
         for(int i=0; i<N*M-3; i++){
-            if(!map[i/N][i%M].equals("0") ) continue;
-            map[i/N][i%M] = "1";
+            if(!map[i/M][i%M].equals("0") ) continue;
+            map[i/M][i%M] = "1";
             
             for(int j=i+1; j<N*M-2 ;j++){
-                if(!map[j/N][j%M].equals("0")) continue;
-                map[j/N][j%M] = "1";
+                if(!map[j/M][j%M].equals("0")) continue;
+                map[j/M][j%M] = "1";
                 
                 for(int k=j+1; k<N*M-1 ;k++){
-                    if(!map[k/N][k%M].equals("0")) continue;
+                    if(!map[k/M][k%M].equals("0")) continue;
                                  
-                    map[k/N][k%M] = "1";
-                    visited = new boolean[N][M];
+                    map[k/M][k%M] = "1";
                     int count = act(map);
                     result = Math.max(count, result);
-                    map[k/N][k%M] = "0";
+                    map[k/M][k%M] = "0";
                 }
-                map[j/N][j%M] = "0";
+                map[j/M][j%M] = "0";
             }
-            map[i/N][i%M] = "0";
+            map[i/M][i%M] = "0";
         }
 
         
         System.out.println(result);
     }
 
-    public static int act(String[][] newmap){
+    public static int act(String[][] map){
+
+        String[][] newmap = new String[N][M];
+        for(int i=0; i<N; i++){
+            newmap[i] = map[i].clone();
+        }
+
+        
         for(int i=0; i<N; i++){
             for(int j=0; j<M; j++){
                 if(newmap[i][j].equals("2"))
@@ -67,12 +71,12 @@ class Main {
         return count;
     }
     
-    public static void dfs(int x, int y, String[][] newmap){
-        visited[x][y] = true;
+    public static void dfs(int x, int y, String[][] newmap){        
         for(int i=0; i<4; i++){
             int xx = x + dx[i];
             int yy = y + dy[i];
-            if(xx >= 0 && xx < N && yy >= 0 && yy < M &&  !visited[xx][yy] && newmap[xx][yy].equals("0")){
+            if(xx >= 0 && xx < N && yy >= 0 && yy < M &&  newmap[xx][yy].equals("0")){
+                newmap[xx][yy] = "2";
                 dfs(xx, yy, newmap);
             }
         }
