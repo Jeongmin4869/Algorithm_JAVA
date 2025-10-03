@@ -30,7 +30,7 @@ class Main {
         for(int i=0; i<N; i++){
             for(int j=0; j<M; j++){
                 if(!visited[i][j] && map[i][j] == 1){
-                    int now = dfs(i, j);
+                    int now = bfs(i, j);
                     count += 1;
                     max = Math.max(max, now);
                 }
@@ -54,6 +54,28 @@ class Main {
             }
         }
 
+        return sum;
+    }
+
+    public static int bfs(int x, int y){
+        visited[x][y] = true;
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[]{x, y});
+        int sum = 1;
+        while(!q.isEmpty()){
+            int[] pos = q.poll();
+            int px = pos[0];
+            int py = pos[1];
+            for(int i=0; i<4; i++){
+                int xx = px + dx[i];
+                int yy = py + dy[i];
+                if(xx>=0 && xx<N && yy>=0 && yy<M && !visited[xx][yy] && map[xx][yy] == 1){
+                    visited[xx][yy] = true;
+                    sum += 1;
+                    q.offer(new int[] {xx, yy});
+                }
+            }
+        }
         return sum;
     }
 }
