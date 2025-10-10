@@ -2,6 +2,7 @@ import java.util.*;
 import java.lang.*;
 import java.io.*;
 
+// The main method must be in a class named "Main".
 class Main {
     static int[][] map;
     static boolean[][] visited;
@@ -33,7 +34,8 @@ class Main {
                 for(int j=0; j<w; j++){
                     if(map[i][j] == 1 && !visited[i][j]){
                         count += 1;
-                        dfs(i, j, h, w);
+                        //dfs(i, j, h, w);
+                        bfs(i, j, h, w);
                     }
                 }
             }
@@ -52,5 +54,26 @@ class Main {
                 dfs(xx, yy, h, w);
             }
         }        
+    }
+
+    public static void bfs(int x, int y, int h, int w){
+        visited[x][y] = true;
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[]{x, y});
+    
+        while(!q.isEmpty()){
+            int[] pos = q.poll();
+            int px = pos[0];
+            int py = pos[1];
+            
+            for(int i=0; i<8; i++){
+                int xx = px + dx[i];
+                int yy = py + dy[i];
+                if(xx>=0 && xx<h && yy>=0 && yy<w && !visited[xx][yy] && map[xx][yy] == 1){
+                    visited[xx][yy] = true;
+                    q.offer(new int[] {xx, yy});
+                }
+            }
+        }
     }
 }
