@@ -27,17 +27,27 @@ class Main {
             int count = 0;
             for(int i=1; i<=N; i++){                
                 if(!visited[i]){
+                    visited[i] = true;
                     count += 1;
-                    bfs(i);
+                    //bfs(i);
+                    dfs(i);
                 }
             }
             System.out.println(count);            
         }
     }
 
+    public static void dfs(int node){
+        for(int newnode : g.get(node)){
+            if(!visited[newnode]){
+                visited[newnode] = true;
+                dfs(newnode);
+            }
+        }
+    }
+
     public static void bfs(int node){
-        Queue<Integer> q = new LinkedList<>();
-        visited[node] = true;
+        Queue<Integer> q = new LinkedList<>();        
         q.offer(node);
         while(!q.isEmpty()){
             int nownode = q.poll();
