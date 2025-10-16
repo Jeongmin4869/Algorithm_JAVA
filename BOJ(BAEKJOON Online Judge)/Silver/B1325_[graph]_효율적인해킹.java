@@ -9,7 +9,6 @@ class Main {
     static ArrayList<ArrayList<Integer>> g;
     static int[] arr;
     static boolean[] visited;
-    static int count =0;
     
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -26,18 +25,19 @@ class Main {
 
         for(int i=0; i<M; i++){
             st = new StringTokenizer(br.readLine());
-            int u = Integer.parseInt(st.nextToken());
-            int v = Integer.parseInt(st.nextToken());
-            g.get(v).add(u);
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            g.get(a).add(b);
         }
 
         int maxval = 0;
         for(int i=1; i<=N; i++){
-            count = 0;
             visited = new boolean[N+1];
             dfs(i);
-            arr[i] = count;
-            maxval = Math.max(maxval,count);
+        }
+
+        for(int i=1; i<=N; i++){
+            maxval = Math.max(maxval, arr[i]);
         }
 
         for(int i=1; i<=N; i++){
@@ -48,10 +48,10 @@ class Main {
     }
 
     public static void dfs(int node){
-        count += 1;
+        visited[node] = true;
         for(int newnode : g.get(node)){
             if(!visited[newnode]){
-                visited[newnode] = true;
+                arr[newnode] += 1;
                 dfs(newnode);
             }
         }
