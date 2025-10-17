@@ -33,7 +33,7 @@ class Main {
         int maxval = 0;
         for(int i=1; i<=N; i++){
             visited = new boolean[N+1];
-            dfs(i);
+            bfs(i);
         }
 
         for(int i=1; i<=N; i++){
@@ -47,6 +47,23 @@ class Main {
 
     }
 
+    public static void bfs(int node){
+        Queue<Integer> q = new LinkedList<>();
+        visited[node] = true;
+        q.offer(node);
+        while(!q.isEmpty()){
+            int nownode = q.poll();
+            for(int newnode : g.get(nownode)){
+                if(!visited[newnode]){
+                    visited[newnode] = true;
+                    arr[newnode] += 1;
+                    q.offer(newnode);
+                }
+            }
+        
+        }
+    }
+    
     public static void dfs(int node){
         visited[node] = true;
         for(int newnode : g.get(node)){
