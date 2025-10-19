@@ -11,8 +11,7 @@ class Main {
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         M = Integer.parseInt(br.readLine());
-        N = Integer.parseInt(br.readLine());
-        visited = new boolean[M+1];
+        N = Integer.parseInt(br.readLine());        
         g = new ArrayList<>();
         for(int i=0; i<=M; i++){
             g.add( new ArrayList<>());
@@ -26,24 +25,47 @@ class Main {
             g.get(v).add(u);
         }
 
+        visited = new boolean[M+1];
         int result = bfs(1);
+
+        visited = new boolean[M+1];
+        result = dfs(1, 1);
         
         System.out.println(result);
     }
 
-    public static int bfs(int node){
-        Queue<Integer> q = new LinkedList<>();
-        visited[node] = true;
-        q.offer(node);
+    // 통과 못함 
+    public static int dfs(int node, int dep){
+        if(dep > 2) return 0;
         int count = 0;
+        
+        for(int newnode : g.get(node)){
+            if(!visited[newnode]){
+                visited[newnode] = true;
+                count += 1;
+                count += dfs(newnode, dep + 1);
+            }
+        }
+
+        return count;
+    }
+    
+    public static int bfs(int node){
+        Queue<int[]> q = new LinkedList<>();
+        visited[node] = true;
+        q.offer(new int[] {node, 1});
+        int count = 0;
+        
         while(!q.isEmpty()){
-            int now = q.poll();
+            int[] top = q.poll();
+            int now = top[0];
+            int dep = top[1];
+            
             for(int newnode : g.get(now)){
-                if(!visited[newnode]){
+                if(!visited[newnode] && dep <= 2){
                     visited[newnode] = true;
                     count += 1;
-                    if(now == newnode)
-                        q.offer(newnode);
+                    q.offer(new int[] {newnode, dep+1});
                 }
             }
         }
