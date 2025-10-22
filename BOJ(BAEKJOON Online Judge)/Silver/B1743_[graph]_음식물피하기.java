@@ -29,7 +29,8 @@ class Main {
         for(int i=0; i<N; i++){
             for(int j=0; j<M; j++){
                 if(arr[i][j]){
-                    result = Math.max(bfs(i, j), result);
+                    // result = Math.max(bfs(i, j), result);
+                    result = Math.max(dfs(i, j), result);
                 }
                     
             }
@@ -56,6 +57,19 @@ class Main {
                     arr[xx][yy] = false;
                     q.offer(new int[]{xx, yy});
                 }
+            }
+        }
+        return count;
+    }
+    
+    public static int dfs(int x, int y){
+        int count = 1;
+        arr[x][y] = false;
+        for(int i=0; i<4; i++){
+            int xx = dx[i] + x;
+            int yy = dy[i] + y;
+            if(xx>=0 && xx<N && yy>= 0 && yy<M && arr[xx][yy]){
+                count += dfs(xx, yy);
             }
         }
         return count;
