@@ -19,15 +19,31 @@ class Main {
             int[] top = q.poll();
             int now = top[0];
             int dep = top[1];
+            
             if(now == N) {
                 count = dep;
                 break;
             }
-            q.offer(new int[]{now+1, dep+1});
-            q.offer(new int[]{now*2, dep+1});
-            q.offer(new int[]{now*3, dep+1});
+            if(now+1<=N && prev[now+1] == -1){
+                    q.offer(new int[]{now+1, dep+1});
+                    prev[now+1] = now;
+                
+            }
+            if(now*2<=N && prev[now*2] == -1){
+                q.offer(new int[]{now*2, dep+1});
+                prev[now*2] = now;
+            }
+            if(now*3<=N&& prev[now*3] == -1){
+                q.offer(new int[]{now*3, dep+1});
+                prev[now*3] = now;
+            }
         }
-        
+
         System.out.println(count);
+
+        for(int i=N; i>0; ){
+            System.out.print(i + " ");
+            i = prev[i];
+        }
     }
 }
