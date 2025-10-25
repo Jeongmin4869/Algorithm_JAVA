@@ -28,3 +28,4 @@ class Main {
             i = pre[i];
         }
     }
+}
