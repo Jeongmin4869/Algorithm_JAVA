@@ -7,44 +7,57 @@ class Main {
     static int N, count;
     static ArrayList<ArrayList<Integer>> g;
     static boolean[] check;
+    static int root;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
         count = 0;
-        check = new boolean[N+1];
+        check = new boolean[N];
         g = new ArrayList<>();
         
-        for(int i=0; i<=N; i++){
+        for(int i=0; i<N; i++){
             g.add(new ArrayList<>());
         }
 
         StringTokenizer st = new StringTokenizer(br.readLine());
         int M = Integer.parseInt( br.readLine());
-        for(int i=1; i<=N; i++){
+        for(int i=0; i<N; i++){
             int num = Integer.parseInt(st.nextToken());
-            if(num!=-1 && num!=M){
-                g.get(num).add(i);
-            }
+            if(num==-1) root = i;
+            else g.get(num).add(i);
+            
         }
 
-        for(int i=1; i<=N; i++){
-            if(!check[i]){
-                dfs(i,1);
-            }
+        if(root == M) {
+            System.out.print(0);
+            return;
         }
+        
+        deleteNode(M);
+        countleaf(root);
+
         
         System.out.println(count);
     }
 
-    public static void dfs(int node, int dep){
+    public static void deleteNode(int node){
         check[node] = true;
-        if(g.get(node).size() == 0 && dep>1){
-            count += 1;
-            return;
+        for(int newnode : g.get(node)){
+            if(!check[newnode]) deleteNode(newnode);
         }
+    }
+
+    public static void countleaf(int node){
+        check[node] = true;
+
+        int checkChild = 0;
 
         for(int newnode : g.get(node)){
-            if(!check[newnode]) dfs(newnode, dep+1);
+            if(!check[newnode]) {
+                checkChild += 1;
+                countleaf(newnode);
+            }
         }
+        if(checkChild==0) count += 1;
     }
 }
