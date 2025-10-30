@@ -31,15 +31,30 @@ class Main {
             for(int j=0; j<N; j++){
                 if(!visited[i][j]){
                     char c = map[i][j];
-                    int cnt = bfs(i, j, c);
-                    if(c == 'B') bc += cnt*cnt;
-                    if(c == 'W') wc += cnt*cnt;
+                    // int cnt = bfs(i, j, 'B');
+                    int cnt = dfs(i, j, c);
+                    if(c == 'B') bc += cnt * cnt;
+                    if(c == 'W') wc += cnt * cnt;
                 }
             }
         }
         System.out.println(wc + " " + bc);
     }
 
+    public static int dfs(int x, int y, char c){
+        int count = 1;
+        visited[x][y] = true;
+        for(int i=0; i<4; i++){
+            int xx = dx[i] + x;
+            int yy = dy[i] + y;
+            if(xx>=0 && xx<M && yy>=0 && yy<N && !visited[xx][yy] && map[xx][yy] == c){
+                count += dfs(xx, yy, c);
+            }
+        }
+        return count;
+    }
+
+    
     public static int bfs(int x, int y, char c){
         int count = 0;
         visited[x][y] = true;
