@@ -32,7 +32,8 @@ class Main {
                 if(!visited[i][j] && map[i][j] != '#' ) {                    
                     o = 0;
                     v = 0;
-                    bfs(i, j);
+                    // bfs(i, j);
+                    dfs(i, j);
                     if(o > v) totalo += o;
                     else totalv += v;
                 }
@@ -42,6 +43,19 @@ class Main {
         System.out.println(totalo + " " + totalv);
     }
 
+    public static void dfs(int x, int y){
+        visited[x][y] = true;
+        if(map[x][y] == 'o') o+=1;
+        if(map[x][y] == 'v') v+=1;
+        for(int i=0; i<4; i++){
+            int xx = x + dx[i];
+            int yy = y + dy[i];
+            if(xx>=0 && xx<N && yy>=0 && yy<M && !visited[xx][yy] && map[xx][yy] != '#'){
+                dfs(xx, yy);
+            }
+        }
+    }
+    
     public static void bfs(int x, int y){
         visited[x][y] = true;
         Queue<int[]> q = new LinkedList<>();
