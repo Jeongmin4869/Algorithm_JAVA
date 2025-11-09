@@ -25,7 +25,14 @@ class Main {
 
         for(int i=0; i<M; i++){
             if(map[0][i] == '0'){
+                visited = new boolean[N][M];
+                /* 
                 if(bfs(0, i)){
+                    System.out.print("YES");
+                    return; 
+                }
+                */
+                if(dfs(0, i)){
                     System.out.print("YES");
                     return; 
                 }
@@ -35,9 +42,26 @@ class Main {
         System.out.print("NO");
     }
 
-    public static boolean bfs(int x, int y){        
-        visited = new boolean[N][M];
+    public static boolean dfs(int x, int y){
         visited[x][y] = true;
+
+        if(x == N-1) {            
+            return true;            
+        }
+
+        for(int i=0; i<4; i++){
+            int xx = x + dx[i];
+            int yy = y + dy[i];
+            if(xx>=0 && xx<N && yy>=0 && yy<M && !visited[xx][yy] && map[xx][yy] == '0'){
+                if(dfs(xx, yy)) return true;                
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean bfs(int x, int y){                
+        visited[x][y] = true;        
         Queue<int[]> q = new LinkedList<>();
         q.offer(new int[] {x, y});
         while(!q.isEmpty()){
