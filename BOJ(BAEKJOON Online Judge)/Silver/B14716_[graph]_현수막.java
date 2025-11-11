@@ -29,13 +29,27 @@ class Main {
             for(int j=0; j<M; j++){
                 if(map[i][j] == 1 && !visited[i][j]){
                     count += 1;
-                    bfs(i, j);
+                    //bfs(i, j);
+                    dfs(i,j);
                 }
             }
         }
         System.out.print(count);
     }
 
+    public static void dfs(int x, int y){
+        visited[x][y] = true;
+        for(int i=0; i<8; i++){
+            int xx = x + dx[i];
+            int yy = y + dy[i];
+            if(xx>=0 && xx<N && yy>=0 && yy<M && !visited[xx][yy] && map[xx][yy] == 1 ){
+                dfs(xx, yy);
+            }
+        }
+    }
+
+
+    
     public static void bfs(int x, int y){
         visited[x][y] = true;
         Queue<int[]> q = new LinkedList<>();
