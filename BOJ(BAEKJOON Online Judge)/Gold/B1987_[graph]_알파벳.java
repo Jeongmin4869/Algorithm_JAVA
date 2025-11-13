@@ -7,6 +7,7 @@ class Main {
     static int N, M;
     static char[][] map;
     static boolean[] check;
+    static int count =0;
     static int[] dx = {0, 1, 0, -1};
     static int[] dy = {1, 0, -1, 0};
     
@@ -26,11 +27,28 @@ class Main {
 
         check = new boolean[27];
 
-        int result = bfs(0, 0);
+        //int result = bfs(0, 0);
+
+        check[map[0][0]-'A'] = true;
+        dfs(0,0,1);
         
-        System.out.println(result);
+        System.out.println(count);
     }
 
+    public static void dfs(int x, int y, int dep){
+        //if(count>dep) return;
+        if(dep>count) count = dep;
+        for(int i=0; i<4; i++){
+            int xx = x + dx[i];
+            int yy = y + dy[i];
+            if(xx>=0 && xx<N && yy>=0 && yy<M && !check[map[xx][yy]-'A']){
+                check[map[xx][yy]-'A'] = true;
+                dfs(xx, yy, dep+1);
+                check[map[xx][yy]-'A'] = false;
+            }
+        }
+    }
+    
     public static int bfs(int x, int y){
         check[map[x][y]-'A'] = true;
         int count = 0;
