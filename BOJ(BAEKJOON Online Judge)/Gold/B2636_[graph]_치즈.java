@@ -10,7 +10,7 @@ class Main {
     static int[] dx = {1, 0, -1, 0};
     static int[] dy = {0, -1, 0, 1};
     public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new ImputStreamReader(System.in));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
@@ -22,22 +22,28 @@ class Main {
             }
         }
 
-        int now = -1;
-        int last = 0;
+        int now = check(map);
+        int last = now;
         int time = 0;
-        int count = 0;
+
         while(now!=0){
-            time += 1;
             last = now;
-            visited = new boolean[N][M];
-            dfs();
+            time += 1;
+            
             if(now == 0){
                 break;
             }
+            
+            visited = new boolean[N][M];
+            dfs(0,0);
+
+            map = change(map);
+            now = check(map);
+            
         }
 
         System.out.println(time);
-        System.out.print(count);
+        System.out.print(last);
     }
 
     public static int check(int[][] arr){
@@ -60,12 +66,15 @@ class Main {
     }
     
     public static void dfs(int x, int y){
-        visited[xx][yy] = true;
+        visited[x][y] = true;
         for(int i=0; i<4; i++){
             int xx = dx[i]+x;
             int yy = dy[i]+y;
-            if(xx>=0 && xx<N && yy>=0 && yy<M && !visited[xx][yy]&& map[xx][yy]==1){
-                map[xx][yy]=2;
+            if(xx>=0 && xx<N && yy>=0 && yy<M && !visited[xx][yy]){
+                if(map[xx][yy] == 0) dfs(xx, yy);
+                if(map[xx][yy] == 1){
+                    map[xx][yy]=2;
+                }
             }
         }
     }
