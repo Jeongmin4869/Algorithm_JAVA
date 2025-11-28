@@ -35,7 +35,8 @@ class Main {
             }
             
             visited = new boolean[N][M];
-            dfs(0,0);
+            //dfs(0,0);
+            bfs(0,0);
 
             map = change(map);
             now = check(map);
@@ -74,6 +75,28 @@ class Main {
                 if(map[xx][yy] == 0) dfs(xx, yy);
                 if(map[xx][yy] == 1){
                     map[xx][yy]=2;
+                }
+            }
+        }
+    }
+
+    public static void bfs(int x, int y){
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[]{x, y});
+        visited[x][y] = true;
+        while(!q.isEmpty()){
+            int[] top = q.poll();
+            int px = top[0];
+            int py = top[1];
+            for(int i=0; i<4; i++){
+                int xx = px+dx[i];
+                int yy = py+dy[i];
+                if(xx>=0&&xx<N&&yy>=0&&yy<M&&!visited[xx][yy]){
+                    visited[xx][yy] = true;
+                    if(map[xx][yy]==0)
+                        q.offer(new int[]{xx,yy});
+                    if(map[xx][yy]==1)
+                        map[xx][yy] = 2;
                 }
             }
         }
