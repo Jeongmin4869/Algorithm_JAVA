@@ -5,7 +5,6 @@ import java.io.*;
 // The main method must be in a class named "Main".
 class Main {
     static int[] parent;
-    static int[] cost;
 
     static class Node implements Comparable<Node>{
         int u, v, w;
@@ -23,17 +22,17 @@ class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
 
-        cost = new int[N];
-        parent = new int[N];
-        for(int i=0; i<N; i++){
-            cost[i] = Integer.parseInt(br.readLine());
+        parent = new int[N+1];
+        List<Node> edge = new ArrayList<>();
+        for(int i=1; i<=N; i++){
+            int cost = Integer.parseInt(br.readLine());
+            edge.add(new Node(0,i,cost));
             parent[i] = i;
         }
 
-        List<Node> edge = new ArrayList<>();
-        for(int i=0; i<N; i++){
+        for(int i=1; i<=N; i++){
             StringTokenizer st = new StringTokenizer(br.readLine());
-            for(int j=0; j<i; j++){
+            for(int j=1; j<i; j++){
                 int w = Integer.parseInt(st.nextToken());
                 edge.add(new Node(i, j, w));
             }
@@ -46,10 +45,10 @@ class Main {
         for(Node e: edge){
             if(find(e.u) != find(e.v)){
                 union(e.u, e.v);
-                val += Math.min(e.w, cost[e.v] + cost[e.u]);
+                val += e.w;
                 count += 1;
             }
-            if(count == N-1) break;
+            if(count == N) break;
         }
 
         System.out.print(val);
