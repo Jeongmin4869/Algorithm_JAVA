@@ -1,0 +1,75 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+// The main method must be in a class named "Main".
+class Main {
+    static int N;
+    static String[] gender;
+    static ArrayList<ArrayList<Node>> g;
+
+    static class Node implements Comparable<Node>{
+        int to, w;
+        Node(int to, int w){            
+            this.to = to;
+            this.w = w;
+        }
+
+        @Override
+        public int compareTo(Node o){
+            return this.w - o.w;
+        }
+    }
+    
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));        
+        N = Integer.parseInt(br.readLine());
+
+        g = new ArrayList<>();        
+        for(int i=0; i<=N; i++){
+            g.add(new ArrayList<>());            
+        }
+        
+        for(int i=0; i<N; i++){
+            String str = br.readLine();
+            for(int j=0; j<N; j++){
+                char c = str.charAt(i);
+                if(c == '0') continue;
+                g.get(i+1).add(new Node(j+1, (int)(c-'a')+1));
+            }
+        }
+
+        int result = prim(1);
+
+        System.out.print(result);
+        
+    }
+
+    public static int prim(int s){
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.offer(new Node(s, 0));
+        boolean[] visited = new boolean[N+1];
+        int count = 0;
+        int val = 0;        
+        while(!pq.isEmpty()){
+            Node top = pq.poll();
+            
+            if(visited[top.to])
+                continue;
+
+            count += 1;
+            val += top.w;            
+            visited[top.to] = true;
+
+            for(Node node: g.get(top.to)){
+                if(!visited[node.to]){
+                    pq.offer(node);
+                }
+            }
+
+            if(count == N)
+                return val;
+        }
+        return -1;
+    }
+}
