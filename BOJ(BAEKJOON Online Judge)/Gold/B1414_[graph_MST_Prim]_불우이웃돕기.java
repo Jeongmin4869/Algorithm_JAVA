@@ -5,6 +5,7 @@ import java.io.*;
 // The main method must be in a class named "Main".
 class Main {
     static int N;
+    static int INF = Integer.MAX_VALUE;
     static String[] gender;
     static ArrayList<ArrayList<Node>> g;
 
@@ -29,19 +30,39 @@ class Main {
         for(int i=0; i<=N; i++){
             g.add(new ArrayList<>());            
         }
+
+        int total = 0;
+        int[][] arr = new int[N+1][N+1];
+
+        for(int i=0; i<=N; i++){
+            Arrays.fill(arr[i], INF);
+        }        
         
         for(int i=0; i<N; i++){
             String str = br.readLine();
             for(int j=0; j<N; j++){
-                char c = str.charAt(i);
+                char c = str.charAt(j);
                 if(c == '0') continue;
-                g.get(i+1).add(new Node(j+1, (int)(c-'a')+1));
+                int len = 0;
+                if('a'<=c && c<='z') len = (int)(c-'a')+1;
+                if('A'<=c && c<='Z') len = (int)(c-'A')+27;
+                arr[i+1][j+1] = Math.min(arr[i+1][j+1], len);
+                arr[j+1][i+1] = Math.min(arr[j+1][i+1], len);
+                total += len;
             }
         }
 
-        int result = prim(1);
+        for(int i=1; i<=N; i++){
+            for(int j=1; j<i; j++){
+                if(arr[i][j] == INF) continue;
+                g.get(i).add(new Node(j, arr[i][j]));
+                g.get(j).add(new Node(i, arr[i][j]));
+            }
+        }
 
-        System.out.print(result);
+        int result = prim(1);        
+        if(result >= 0) System.out.print(total - result);
+        else System.out.print(-1);
         
     }
 
