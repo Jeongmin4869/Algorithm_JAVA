@@ -27,7 +27,7 @@ class Main {
             g.add(new ArrayList<>());
         }
 
-        for(int i=0; i<M; i++){
+        for(int i=0; i<=M; i++){
             st = new StringTokenizer(br.readLine());
             int u = Integer.parseInt(st.nextToken());
             int v = Integer.parseInt(st.nextToken());
@@ -37,6 +37,7 @@ class Main {
         }
 
         int max = prim(0, true);
+        
         int min = prim(0, false);
 
         System.out.print(max*max - min*min);
@@ -45,14 +46,14 @@ class Main {
     public static int prim(int s, boolean worst){
         boolean[] visited = new boolean[N+1];
         PriorityQueue<Node> pq;
-        if(worst){
+        if(!worst){
             pq = new PriorityQueue<>((o1, o2)->{return o2.isup - o1.isup;});
         }
         else {
             pq = new PriorityQueue<>((o1, o2)->{return o1.isup - o2.isup;});
         }
         
-        pq.offer(new Node(s, 0));
+        pq.offer(new Node(s, -1));
         int count = 0;
         int uphill = 0;
         while(!pq.isEmpty()){
@@ -60,7 +61,9 @@ class Main {
             if(visited[top.to])
                 continue;
 
-            uphill += top.isup;
+            if(top.isup == 0)
+                uphill += 1;
+            
             count += 1;
             visited[top.to] = true;
 
