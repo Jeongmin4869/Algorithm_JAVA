@@ -10,6 +10,7 @@ class Main {
     static int[] dx = {1, 0, -1, 0};
     static int[] dy = {0, -1, 0, 1};
     static int N, M;
+    static List<Node> g;
 
     static class Node implements Comparable<Node>{
         int u, v, w;
@@ -39,21 +40,50 @@ class Main {
             }
         }
 
-        int idx = 1;
+        int idx = 0;
         for(int i=0; i<N; i++){
-            
             for(int j=0; j<M; j++){
                 if(map[i][j] == 1 && !visited[i][j]){
-                    dfs(i, j, idx);
                     idx += 1;
+                    dfs(i, j, idx);
                 }
             }
         }
 
+        g = new ArrayList<>();
+        addNode();
         
-        System.out.println("Hello world!");
+        parent = new int[idx+1];
+        for(int i=0; i<=idx; i++){
+            parent[i] = i;
+        }
+
+        int count = 0;
+        int val = 0;
+        for(Node node : g){
+            if(find(node.u) != find(node.v)){
+                union(node.u, node.v);
+                val += node.w;
+                count += 1;
+            }
+
+            if(count == idx-1 ) break;
+        }
+
+        System.out.println(val);
     }
 
+    public static int find(int x){
+        if(parent[x] == x) return x;
+        return parent[x] = find(parent[x]);
+    }
+
+    public static void union(int a, int b){
+        a = find(a);
+        b = find(b);
+        if(a!=b) parent[b] = a;
+    }
+    
     public static void dfs(int x, int y, int num){
         visited[x][y] = true;
         map[x][y] = num;
@@ -62,6 +92,49 @@ class Main {
             int yy = y + dy[i];
             if(xx>=0 && xx<N && yy>=0 && yy<M && !visited[xx][yy] && map[xx][yy]==1){
                 dfs(xx, yy, num);
+            }
+        }
+    }
+
+    public static void addNode(){
+        for(int i=0; i<N; i++){
+            for(int j=0; j<M; j++){
+                if(map[i][j]==0) continue;
+
+                boolean checkside = false;
+                for(int k=0; k<4; k++){
+                    int xx = i+dx[k];
+                    int yy = j+dy[k];
+                    if(xx>=0 && xx<N & yy>=0 && yy<M && map[xx][yy] == 0)
+                        checkside = true;
+                }
+
+                if(!checkside) continue;
+
+                int from = map[i][j];
+
+                for(int k=0; k<4; k++){
+                    int xx = i+dx[k];
+                    int yy = j+dy[k];
+                    int len = 0;
+
+                    while(true){
+                        if(xx<0 || xx>=N || yy<0 || yy>=M) break;
+
+                        if(map[xx][yy] == 0){
+                            len += 1;
+                            xx += dx[k];
+                            yy += dy[k];
+                        }
+                        else {
+                            int to = map[xx][yy];
+                            if(to == from) break;
+                            if(len <= 1) break;
+                            g.add(new Node(from, to, len));
+                            break;
+                        }
+                    }
+                }
             }
         }
     }
