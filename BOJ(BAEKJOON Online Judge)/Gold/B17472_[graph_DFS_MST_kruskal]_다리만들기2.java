@@ -2,7 +2,6 @@ import java.util.*;
 import java.lang.*;
 import java.io.*;
 
-// The main method must be in a class named "Main".
 class Main {
     static int[] parent;;
     static int[][] map;
@@ -49,7 +48,7 @@ class Main {
                 }
             }
         }
-
+        
         g = new ArrayList<>();
         addNode();
         
@@ -60,6 +59,7 @@ class Main {
 
         int count = 0;
         int val = 0;
+        Collections.sort(g);
         for(Node node : g){
             if(find(node.u) != find(node.v)){
                 union(node.u, node.v);
@@ -67,10 +67,13 @@ class Main {
                 count += 1;
             }
 
-            if(count == idx-1 ) break;
+            if(count == idx-1 ) {
+                System.out.println(val);
+                return;
+            }
         }
 
-        System.out.println(val);
+        System.out.println(-1);
     }
 
     public static int find(int x){
@@ -83,7 +86,8 @@ class Main {
         b = find(b);
         if(a!=b) parent[b] = a;
     }
-    
+
+    /* 섬 나누기 */ 
     public static void dfs(int x, int y, int num){
         visited[x][y] = true;
         map[x][y] = num;
@@ -96,6 +100,7 @@ class Main {
         }
     }
 
+    /* 조건에 맞는 다리 추가하기 */
     public static void addNode(){
         for(int i=0; i<N; i++){
             for(int j=0; j<M; j++){
@@ -131,6 +136,7 @@ class Main {
                             if(to == from) break;
                             if(len <= 1) break;
                             g.add(new Node(from, to, len));
+                            // System.out.println(from + " " + to +" " + len);
                             break;
                         }
                     }
