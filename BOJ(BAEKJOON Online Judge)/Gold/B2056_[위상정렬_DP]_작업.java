@@ -7,6 +7,7 @@ class Main {
     static int N;
     static int[] indegree;
     static int[] time;
+    
     static ArrayList<ArrayList<Integer>> g;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -38,20 +39,32 @@ class Main {
 
     public static int khan(){
         Queue<Integer> q = new LinkedList<>();
+        
         for(int i=1; i<=N; i++){
             if(indegree[i]==0) q.offer(i);
         }
-        int times = 0;
+
+        int[] dp= new int[N+1];
+        for(int i=0; i<=N; i++){
+            dp[i] = time[i];
+        }
+
+        
         while(!q.isEmpty()){
-            int top = q.poll();
-            times += time[top];
-            for(int idx : g.get(top)){
-                indegree[idx] -= 1;
-                if(indegree[idx] == 0)
-                    q.offer(idx);
+            int cur = q.poll();
+            for(int next : g.get(cur)){
+                dp[next] = Math.max(dp[next], dp[cur] + time[next]);
+                indegree[next] -= 1;
+                if(indegree[next] == 0)
+                    q.offer(next);
             }
         }
-        return times;
+
+        int result = 0;
+        for(int i =0; i<=N; i++){
+            result = Math.max(result, dp[i]);
+        }
+        return result;
     }
 
 }
