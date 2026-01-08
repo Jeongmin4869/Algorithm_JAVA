@@ -58,7 +58,7 @@ class Main {
         while(!q.isEmpty()){
             int top = q.poll();
             for(int next : g.get(top)){
-                dp[next] = Math.min(dp[top] + time[next] , dp[next]);
+                dp[next] = Math.max(dp[top] + time[next] , dp[next]);
                 indegree[next] -= 1;
                 if(indegree[next] == 0)
                     q.offer(next);
