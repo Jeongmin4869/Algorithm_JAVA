@@ -4,11 +4,19 @@ import java.io.*;
 
 // The main method must be in a class named "Main".
 class Main {
-    static int level = 2;
     static int N;
     static int[][] map;
     static int[] dx = {-1, 0, 0, 1};
     static int[] dy = {0, -1, 1, 0};
+
+    static class Node{
+        int x, y, dist;
+        Node(int x, int y, int dist){
+            this.x = x;
+            this.y = y;
+            this.dist = dist;
+        }
+    }
     
     public static void main(String[] args) throws IOException {
         BufferedReader br =new BufferedReader(new InputStreamReader(System.in));
@@ -24,6 +32,7 @@ class Main {
                 if(map[i][j] == 9){
                     x = i;
                     y = j;
+                    map[i][j] = 0;
                 }
             }
         }
@@ -33,36 +42,54 @@ class Main {
         System.out.print(result);
     }
 
-    static int bfs(int x, int y){
-        Queue<int[]> q = new LinkedList<>();
-        int time =-1;
-        int result = 0;
+    public static int bfs(int x, int y){
         int eat = 0;
-        q.offer(new int[]{x, y});
-        while(!q.isEmpty()){
-            time += 1;
-            int[] top = q.poll();
-            int px = top[0];
-            int py = top[1];
-            if(map[px][py]!=0 && map[px][py] < level){
-                eat += 1;
-                map[px][py] = 0;
-                result += time;
-                time = 0;
-                if(eat == level){
-                    eat = 0;
-                    level += 1;
-                }
-            }
+        int level = 2;
+        int time = 0;
+        while(true){
+            Queue<Node> q = new LinkedList<>();
+            boolean[][] visited = new boolean[N][N];
+            List<Node> fish = new ArrayList<>();
+            q.offer(new Node(x, y, 0));
+            visited[x][y] = true;
+            int mindist = N*N;
+            while(!q.isEmpty()){
+                Node cur = q.poll();
+                if(cur.dist > mindist) break;
 
-            for(int i=0; i<4; i++){
-                int xx = px + dx[i];
-                int yy = py + dy[i];
-                if(xx>=0 && xx<N && yy>=0 && yy<N){
-                    q.offer(new int[]{xx, yy});
+                if(map[cur.x][cur.y]!=0 && map[cur.x][cur.y] <= level){
+                    fish.add(cur);
+                    mindist = cur.dist;
+                }
+
+                for(int i=0; i<4; i++){
+                    int xx = x+dx[i];
+                    int yy = y+dy[i];
+                    if(xx>=0&&xx<N&&yy>=0&&yy<N&&!visited[xx][yy]&&map[xx][yy]<level){
+                        visited[xx][yy] = true;
+                        q.offer(new Node(xx, yy, cur.dist+1));
+                    }
+                }
+
+                if(fish.size() == 0) break;
+
+                fish.sort((o1, o2)->{
+                    if(o1.y == o2.y) return o1.x-o2.x;
+                    return o1.y - o2.y;
+                });
+
+                Node eatfish = fish.get(0);
+                time += eatfish.dist;
+                x = eatfish.x;
+                y = eatfish.y;
+                map[x][y] = 0;
+                eat += 1;
+                if(eat == level){
+                    level += 1;
+                    eat = 0;
                 }
             }
+            return time;
         }
-        return result;
     }
 }
