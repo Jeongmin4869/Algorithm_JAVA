@@ -57,39 +57,40 @@ class Main {
                 Node cur = q.poll();
                 if(cur.dist > mindist) break;
 
-                if(map[cur.x][cur.y]!=0 && map[cur.x][cur.y] <= level){
+                if(map[cur.x][cur.y]!=0 && map[cur.x][cur.y] < level ){
                     fish.add(cur);
                     mindist = cur.dist;
                 }
 
                 for(int i=0; i<4; i++){
-                    int xx = x+dx[i];
-                    int yy = y+dy[i];
-                    if(xx>=0&&xx<N&&yy>=0&&yy<N&&!visited[xx][yy]&&map[xx][yy]<level){
+                    int xx = cur.x+dx[i];
+                    int yy = cur.y+dy[i];
+                    if(xx>=0&&xx<N&&yy>=0&&yy<N&&!visited[xx][yy]&&map[xx][yy]<=level){
                         visited[xx][yy] = true;
                         q.offer(new Node(xx, yy, cur.dist+1));
                     }
                 }
-
-                if(fish.size() == 0) break;
-
-                fish.sort((o1, o2)->{
-                    if(o1.y == o2.y) return o1.x-o2.x;
-                    return o1.y - o2.y;
-                });
-
-                Node eatfish = fish.get(0);
-                time += eatfish.dist;
-                x = eatfish.x;
-                y = eatfish.y;
-                map[x][y] = 0;
-                eat += 1;
-                if(eat == level){
-                    level += 1;
-                    eat = 0;
-                }
             }
-            return time;
+
+            if(fish.size() == 0) break;
+
+            fish.sort((o1, o2)->{
+                if(o1.x == o2.x) return o1.y -o2.y;
+                return o1.x - o2.x;
+            });
+
+                
+            Node eatfish = fish.get(0);
+            time += eatfish.dist;
+            x = eatfish.x;
+            y = eatfish.y;
+            map[x][y] = 0;
+            eat += 1;
+            if(eat == level){
+                level += 1;
+                eat = 0;
+            }
         }
+        return time;
     }
 }
