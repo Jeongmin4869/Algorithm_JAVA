@@ -1,8 +1,6 @@
 import java.util.*;
-import java.lang.*;
 import java.io.*;
 
-// The main method must be in a class named "Main".
 class Main {
     static int N, L , R;
     static int[][] map ;
@@ -29,16 +27,17 @@ class Main {
         
         while(true){
             visited = new boolean[N][N];
-            boolean flag = false;
+            boolean moved = false;
             for(int i=0;i<N; i++){
                 for(int j=0; j<N; j++){
                     if(!visited[i][j]){
-                        boolean check = bfs(i,j);
-                        if(check)flag = true;
+                        if(bfs(i,j)){
+                            moved = true;
+                        }
                     }
                 }
             }
-            if(!flag) break;
+            if(!moved) break;
             else count += 1;
         }
 
@@ -60,28 +59,28 @@ class Main {
             for(int i=0; i<4; i++){
                 int xx = dx[i] + px;
                 int yy = dy[i] + py;
-                if(xx>=0&&xx<N&&yy>=0&&yy<N&&!visited[xx][yy]){
-                    int dif = Math.abs(map[px][py]-map[xx][yy]);
-                    if(dif>=L && dif<=R){
-                        visited[xx][yy] = true;
-                        q.offer(new int[]{xx, yy});
-                        union.offer(new int[]{xx, yy});
-                        sum += map[xx][yy];
-                    }
-                }
+                if(xx<0 || xx >= N || yy<0 || yy>=N) continue;
+                if(visited[xx][yy]) continue;
+           
+                int dif = Math.abs(map[px][py]-map[xx][yy]);
+                if(dif<L || dif>R) continue;
+                
+                visited[xx][yy] = true;
+                q.offer(new int[]{xx, yy});
+                union.offer(new int[]{xx, yy});
+                sum += map[xx][yy];         
             }
         }
+        
+        if(union.size()==1) return false;
 
-        boolean flag = false;
-        if(union.size()>1) flag = true;
-
-        int num = sum/union.size();
+        int avg = sum/union.size();
 
         while(!union.isEmpty()){
             int[] top = union.poll();
-            map[top[0]][top[1]] = num;
+            map[top[0]][top[1]] = avg;
         }
 
-        return flag;
+        return true;
     }
 }
