@@ -5,6 +5,7 @@ import java.io.*;
 // The main method must be in a class named "Main".
 class Main {
     static int N, E, V1, V2;
+    static int INF = 10000000;
     static ArrayList<ArrayList<Node>> g;
 
     static class Node implements Comparable<Node>{
@@ -41,26 +42,39 @@ class Main {
         V1 = Integer.parseInt(st.nextToken());
         V2 = Integer.parseInt(st.nextToken());
         
-        int result = bfs();
+        int[] dist1 = dijkstra(1);
+        int[] distV1 = dijkstra(V1);
+        int[] distV2 = dijkstra(V2);
 
-        System.out.print(result);
+        int case1 = dist1[V1] + distV1[V2] + distV2[N];
+        int case2 = dist1[V2] + distV2[V1] + distV1[N];
+
+        int result = Math.min(case1, case2);
+        if(result >= INF) System.out.print(-1);
+        else System.out.print(result);
     }
 
-    public static int bfs(){
+    public static int[] dijkstra(int start){
+        int[] dist = new int[N+1];
+        Arrays.fill(dist, INF);
+        dist[start] = 0;
         PriorityQueue<Node> pq = new PriorityQueue<>();
-        boolean[] visited = new boolean[N+1];
-        pq.offer(new Node(V1, 0));
-        int sum = 0;
+        pq.offer(new Node(start, 0));
         while(!pq.isEmpty()){
-            Node node = pq.poll();
-            visited[node.to] = true;
-            sum += node.val;
-            for(Node newnode : g.get(node.to)){
-                if(!visited[newnode.to]){
-                    pq.offer(newnode);
+            Node top = pq.poll();
+            if(dist[top.to]<top.val) continue;
+
+            for(Node newnode : g.get(top.to)){
+                int d = dist[top.to]+newnode.val;
+                if(dist[newnode.to] > d){
+                    dist[newnode.to] = d;
+                    pq.offer(new Node(newnode.to, d));
+                    
                 }
             }
         }
-        return sum;
+
+        return dist;
+            
     }
 }
