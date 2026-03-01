@@ -6,7 +6,7 @@ import java.io.*;
 class Main {
 
     static int N, M, A, B;
-    static int[] check;
+    static int[] prev;
     static ArrayList<ArrayList<Node>> g;
 
     static class Node implements Comparable<Node>{
@@ -26,7 +26,7 @@ class Main {
         N = Integer.parseInt(br.readLine());
         M = Integer.parseInt(br.readLine());
 
-        check = new int[N+1];
+        prev = new int[N+1];
         g = new ArrayList<>();
 
         for(int i=0; i<=N; i++){
@@ -40,34 +40,53 @@ class Main {
             int v = Integer.parseInt(st.nextToken());
             int c = Integer.parseInt(st.nextToken());
             g.get(u).add(new Node(v, c));
-            g.get(v).add(new Node(u, c));
+            //g.get(v).add(new Node(u, c));
         }
 
         st  = new StringTokenizer(br.readLine());
         A = Integer.parseInt(st.nextToken());
         B = Integer.parseInt(st.nextToken());
+
+        int[] diff = dijkstra(A);
+
+        int cur = B;
+        List<Integer> list = new ArrayList<>();
+        while(cur>0){
+            list.add(cur);
+            cur = prev[cur];
+        }
+
+        System.out.println(diff[B]);
+        System.out.println(list.size());
+
+        Collections.reverse(list);
+
+        for(int n : list){
+            System.out.print(n + " ");
+        }
+
         
-        System.out.println("Hello world!");
     }
 
     public static int[] dijkstra(int s){
-        int INF = 1000000;
+        int INF = Integer.MAX_VALUE;
         int[] dist = new int[N+1];
         Arrays.fill(dist, INF);
         PriorityQueue<Node> pq = new PriorityQueue<>();
         pq.offer(new Node(s, 0));
+        dist[s] = 0;
         while(!pq.isEmpty()){
             Node node = pq.poll();
-            if(node.c >= dist[node.to]) continue;
+            if(node.c > dist[node.to]) continue;
             for(Node newnode : g.get(node.to)){
                 int cost = dist[node.to] + newnode.c;
                 if(cost < dist[newnode.to]){
                     dist[newnode.to] = cost;
+                    prev[newnode.to] = node.to;
                     pq.offer(new Node(newnode.to, cost));
                 }
             }
         }
         return dist;
-
     }
 }
