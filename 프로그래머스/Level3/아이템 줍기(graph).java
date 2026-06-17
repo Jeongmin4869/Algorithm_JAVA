@@ -55,15 +55,22 @@ class Solution {
         }
         return 0;
     }
-    
+
+    //현재 좌표가 테두리에 해당하는지 검증
     public static boolean check(int x, int y){
+        int[] px = {1, 1, 1, 0, 0, -1, -1, -1};
+        int[] py = {1, 0, -1, 1, -1, 1, 0, -1};
         
-        for(int i=0; i<4; i++){
-            int xx = x+dx[i];
-            int yy = y+dy[i];
-            if(xx>=0 && xx<102 && yy>=0 && yy<102){
-                if(map[xx][yy] == 0) return true;
+        for(int i=0; i<8; i++){
+            int xx = x+px[i];
+            int yy = y+py[i];
+            if(xx < 0 || xx >= 102 || yy < 0 || yy >= 102){
+                return true;
             }
+
+            if(map[xx][yy] == 0){
+                return true;
+             }
         }
         return false;
         
