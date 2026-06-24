@@ -4,11 +4,9 @@ class Solution {
     public int solution(int n, int[][] results) {
         int answer = 0;
         f = new int[n+1][n+1];
-        for(int i=0; i<=results.length; i++){
-            for(int j=0; j<2; j++){
-                f[i][j] = 1;
-                f[j][i] = -1;
-            }
+        for(int[] result : results){
+            f[result[0]][result[1]] = 1;
+            f[result[1]][result[0]] = -1;
         }
 
         for(int i=0; i<=n; i++){
@@ -26,11 +24,12 @@ class Solution {
             }
         }
         
-        for(int i=0; i<=n; i++){
+        for(int i=1; i<=n; i++){
             int count = 0;
-            for(int j=0; j<=n; j++){
-                if(f[i][j] != 0) count += 1;
+            for(int j=1; j<=n; j++){
+                if(f[i][j] != 0) count += 1;            
             }
+            //System.out.println(count);
             if(count == n-1) answer += 1;
         }
         
