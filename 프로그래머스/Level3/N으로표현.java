@@ -13,15 +13,16 @@ class Solution {
             dp[i].add(num);
                     
             for(int a:dp[i]){
-                for(int b:dp[i]){
+                for(int b:dp[j-i]){
                     dp[i].add(a+b);
                     dp[i].add(a-b);
                     dp[i].add(a/b);
                     dp[i].add(a*b);
                 }
             }
+            if(dp[i].contains(number)) return i;
         }
-                
-        return answer;
+        
+        return -1;
     }
 }
