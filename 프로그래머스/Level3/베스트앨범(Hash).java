@@ -42,7 +42,7 @@ class Solution {
                 if(o2.time == o1.time ) return o1.idx - o2.idx ;
                 return o2.time - o1.time ;
             });
-            for(int i=0; i<2; i++){
+            for(int i=0; i<Math.min(2, list.size()); i++){
                 answer.add(list.get(i).idx);                
             }
         }
