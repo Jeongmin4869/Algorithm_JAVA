@@ -26,17 +26,28 @@ class Solution {
     public int solution(int[][] jobs) {
         int answer = 0;
         PriorityQueue<Node> pq = new PriorityQueue<>();
-        for(int i=0; i<jobs.length; i++){
-            pq.offer(new Node(i, jobs[i][0], jobs[i][1]));
-        }
+        Arrays.sort(jobs, (o1, o2) -> {
+           return o1[0] - o2[0]; 
+        });
         
-        int start = 0;
-        int end = 0;
-        while(!pq.isEmpty()){
-            Node top =  pq.poll();
-            start = Math.max(top.s, start);
-            end = start + top.time;
-            answer += end - start;
+        int idx = 0;
+        int now = 0;
+        while(idx<jobs.length || !pq.isEmpty()){
+            
+            while(idx<jobs.length && jobs[idx][0] <= now){
+                pq.offer(new Node(idx, jobs[idx][0], jobs[idx][1]));
+                idx += 1;
+            }
+            
+            if(pq.isEmpty()){
+                now = jobs[idx][0];
+                continue;             
+            }
+            
+            Node top = pq.poll();
+            now += top.time;
+            answer += now - top.s;
+                
         }
         
         return answer/jobs.length;
