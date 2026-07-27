@@ -8,7 +8,7 @@ class Solution {
         Arrays.sort(times);
                 
         long s = 0; 
-        long e = times[times.length - 1] * n;
+        long e = (long)times[times.length - 1] * n;
         while(s<=e){
             long mid = (s+e)/2;
             long sum = 0;
