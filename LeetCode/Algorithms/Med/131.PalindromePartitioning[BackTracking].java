@@ -18,7 +18,7 @@ class Solution {
 
     public static void dfs(int start, String str, ArrayList<String> list ){
         if(start == N){
-            result.add(list);            
+            result.add(new ArrayList<>(list));            
             return;
         }
 
