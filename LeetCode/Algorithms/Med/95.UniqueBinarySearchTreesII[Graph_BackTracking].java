@@ -17,6 +17,7 @@ class Solution {
         return dfs(1, n);
     }
 
+    // start 부터 end 까지의 수로 만들 수 있는 트리 
     public static List<TreeNode> dfs(int start, int end){        
         List<TreeNode> result = new ArrayList<>();
         if(start > end) {
@@ -26,10 +27,15 @@ class Solution {
     
         for(int root =start; root <=end; root++){
             // root가 부모 
-            List<TreeNode> left = dfs(start, root-1);
-            List<TreeNode> right = dfs(root+1, end);
-            result.add(left);
-            result.add(right);
+            List<TreeNode> leftTree = dfs(start, root-1);
+            List<TreeNode> rightTree = dfs(root+1, end);
+            
+            for(TreeNode left : leftTree){
+                for(TreeNode right : rightTree){
+                    TreeNode node = new TreeNode(root, left, right);
+                    result.add(node);
+                }
+            }
         }
         return result;
     }
