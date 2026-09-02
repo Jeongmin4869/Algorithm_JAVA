@@ -29,3 +29,24 @@ class Solution {
         return list;
     }
 }
+
+
+/*
+
+class Solution {
+    public List<String> getLongestSubsequence(String[] words, int[] groups) {
+        List<String> list = new ArrayList<>();
+        list.add(words[0]);
+        int prev = groups[0];
+        for(int i=1; i<words.length; i++){
+            int now = groups[i];
+            if(prev != now){
+                prev = now;
+                list.add(words[i]);
+            }
+        }
+        return list;
+    }
+}
+
+*/
