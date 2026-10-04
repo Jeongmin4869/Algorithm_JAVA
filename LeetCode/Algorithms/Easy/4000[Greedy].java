@@ -1,19 +1,12 @@
 class Solution {
-    public int largestInteger(int n, int s) {
-        int sum = 0;
-        int num = 0;
-        int nows = s;
+    public int largestInteger(int n, int s) {                
+        StringBuilder sb = new StringBuilder();       
         for(int i=0; i<n; i++){
-            if(nows>=10){
-                num += 9;
-                sum += 9;
-            }  
-            else {
-                num += nows;
-                sum += nows;
-                nows = 0;
-            }
-            if(i<n-1) num *= 10;
+            int digit = Math.min(s, 9);
+            sb.append(Integer.toString(digit));
+            s -= digit;            
         }
+        if(s>0) return -1;
+        else return Integer.parseInt(sb.toString());
     }
 }
