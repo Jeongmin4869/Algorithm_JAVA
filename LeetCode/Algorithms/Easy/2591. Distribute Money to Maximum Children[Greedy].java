@@ -5,12 +5,13 @@ class Solution {
         money -= children;
 
         int count = 0;
-        count = money/7;
+        count = Math.min(money/7, children);
 
         money -= count*7;
         children -= count;
 
-        if(children == 1 && money == 3) return 1;
+        if(children == 1 && money == 3) return count-1;
+        if(children == 0 && money > 0) return count -1;
 
         return count ;
     }
