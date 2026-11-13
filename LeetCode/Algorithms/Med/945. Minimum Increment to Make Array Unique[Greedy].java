@@ -5,15 +5,15 @@ class Solution {
         int result = 0;
         Arrays.sort(nums);
 
-        int now = 0;
+        int pre = -1;
 
         for (int num : nums) {
-            if (now >= num) {
-                int dis = now + 1 - num;
+            if (pre >= num) {
+                int dis = pre + 1 - num;
                 result += dis;
-                now += dis;
+                pre ++;
             } else {
-                now = num;
+                pre = num;
             }
         }
 
